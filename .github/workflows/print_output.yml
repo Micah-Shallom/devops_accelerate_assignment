@@ -9,7 +9,8 @@ jobs:
 
   print_output_job:
     runs-on: ubuntu-latest
-    steps:        
+    steps:       
+      - uses: actions/checkout@v3
       - name: Print OS-name 
         run: |
           cat /etc/os-release
