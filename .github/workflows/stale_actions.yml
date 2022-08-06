@@ -15,7 +15,7 @@ jobs:
           stale-issue-message: 'This issue is stale because it has been open 1 day with no activity. Remove stale label or comment or this will be closed in 2 days'
           days-before-stale: 1
 
-          close-issue-reason: 'User has been notified of stale issue and issue requires to be closed after 2 days'
+          # close-issue-reason: 'User has been notified of stale issue and issue requires to be closed after 2 days'
           days-before-close: 2
 
           exempt-issue-labels: 'blocked,must,should,keep'
