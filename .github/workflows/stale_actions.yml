@@ -24,7 +24,7 @@ jobs:
       - name: Print stale outputs 
         run: |
           echo ${{ join(steps.stale.outputs.*, ',') }}
-          echo "Job Status ${{job.status}}""
+          echo "Job Status ${{job.status}}"
           
   print_output_job:
     runs-on: ubuntu-latest
