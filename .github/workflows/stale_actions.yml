@@ -1,6 +1,6 @@
 name: 'Stale issue handler'
 on:
-  workflow_dispatch:
+  # workflow_dispatch:
   schedule:
     # specifying cron to run build at 4.00pm daily
     - cron: '* * * * *'
