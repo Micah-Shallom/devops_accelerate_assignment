@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   schedule:
     # specifying cron to run build at 4.00pm daily
-    - cron: '1/1 * * * *'
+    - cron: '* * * * *'
 
 jobs:
   stale_job:
