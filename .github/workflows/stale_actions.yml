@@ -1,8 +1,7 @@
 name: 'Stale issue handler'
 on:
-  # workflow_dispatch:
+  workflow_dispatch:
   schedule:
-    # specifying cron to run build at 4.00pm daily
     - cron: '0 4 * * *'
 
 jobs:
@@ -27,15 +26,4 @@ jobs:
           echo ${{ join(steps.stale.outputs.*, ',') }}
           echo "Job Status ${{job.status}}"
           
-  print_output_job:
-    runs-on: ubuntu-latest
-    needs: [stale_job]
-    steps:        
-      - name: Print OS-name 
-        run: |
-          cat /etc/os-release
-
-      - name: List all files in the directory
-        run: |
-          ls ${{github.workspace}}
-
+  
