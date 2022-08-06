@@ -1,12 +1,10 @@
 name: 'Output config'
-
 on: 
   push:
     branches:
       - main
 
 jobs:
-
   print_output_job:
     runs-on: ubuntu-latest
     steps:       
