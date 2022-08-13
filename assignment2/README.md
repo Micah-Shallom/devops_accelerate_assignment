@@ -2,7 +2,7 @@
 
 - ### Write a docker command that launches an application container from same image
 
-- <u>Find `Dockerfile` inside the `todo-app/src/` directory</u>
+- <u>Find `Dockerfile` inside the `[todo-app/src/](todo-app/src/)` directory</u>
 
 - Got this code from a random github repository- https://github.com/kabirbaidhya/react-todo-app
 
