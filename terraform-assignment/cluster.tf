@@ -62,32 +62,41 @@ resource "aws_security_group" "myapp-sg" {
         Name = "sg"
     }
 } 
+#======================================================================================
+resource "aws_lb" "test" {
+  name               = "test-lb-tf"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.myapp-sg.id]
+  subnets            = [aws_subnet.myapp-subnet.id]
 
+  enable_deletion_protection = true
 
-# resource "aws_key_pair" "ssh-key" {
-#     key_name = "server-key"
-#     public_key = file(var.public_key_location)
-# }
-
-
-resource "aws_instance" "myapp-server" {
-    ami = data.aws_ami.latest-amazon-linux-image.id
-    instance_type = var.instance_type
-
-    subnet_id = aws_subnet.myapp-subnet-1.id
-    vpc_security_group_ids = [aws_security_group.myapp-sg.id]
-    availability_zone = var.avail_zone
-
-    associate_public_ip_address = true
-    key_name = aws_key_pair.ssh-key.key_name
-
-    user_data = file("command.sh")
-
-    tags  = {
-        Name = "server"
-    }
-
+  tags = {
+    Name = "LoadBalancer"
+  }
 }
+
+resource "aws_lb_listener" "app-listener" {
+  load_balancer_arn = aws_lb.test.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = "arn:aws:iam::187416307283:server-certificate/test_cert_rab3wuqwgja25ct3n4jdj2tzu4"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.target-group.arn
+  }
+}
+
+resource "aws_lb_target_group" "target-group" {
+  name     = "tf-example-lb-tg"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.myapp-vpc.id
+}
+
 
 # ====================================================
 data "aws_ami" "ubuntu" {
@@ -103,7 +112,7 @@ data "aws_ami" "ubuntu" {
     values = ["hvm"]
   }
 
-  owners = ["099720109477"] # Canonical
+  owners = ["099720109477"] 
 }
 
 resource "aws_launch_configuration" "as_conf" {
@@ -120,8 +129,10 @@ resource "aws_launch_configuration" "as_conf" {
 resource "aws_autoscaling_group" "app_asg" {
   name                 = "terraform-asg-example"
   launch_configuration = aws_launch_configuration.as_conf.name
-  min_size             = 20
-  max_size             = 20
+  min_size             = 5
+  max_size             = 6
+  vpc_zone_identifier = [aws_subnet.myapp-subnet.id]
+  availability_zones = "us-east-1a"
 
   lifecycle {
     create_before_destroy = true
