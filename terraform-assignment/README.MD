@@ -1,0 +1,1 @@
+## My AWS Account got suspended and so I cant submit screenshots of a running application.
