@@ -28,3 +28,8 @@ Wrote helm chart deployment for application
 Running application
 
 ![](./screenshots/5.deploy_success.jpg)
+
+
+
+https://user-images.githubusercontent.com/64049432/189550249-dbda371f-68f7-4ff4-ae3e-d481a222cd53.mp4
+
