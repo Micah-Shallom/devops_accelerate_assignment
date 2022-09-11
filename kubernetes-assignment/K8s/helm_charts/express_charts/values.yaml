@@ -9,10 +9,11 @@ image:
   pullPolicy: IfNotPresent
 
 service:
-  type: ClusterIP
-  port: 27017
-  name: mongodb-service
-  targetPort: 27017
+  type: LoadBalancer
+  port: 8081
+  name: mongo-express-service
+  targetPort: 8081
+  nodePort: 30000
 
 container:
   name: mongodb
