@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-frontend-deployment
+  labels:
+    app: app-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-frontend
+  template:
+    metadata:
+      labels:
+        app: app-frontend
+    spec:
+      containers:
+      - name: application
+        image: {{ .Values.appimage.repository }}
+        ports:
+          - containerPort: {{ .Values.appservice.targetPort }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-frontend-service
+spec:
+  selector:
+    app: app-frontend
+  type: {{ .Values.appservice.type }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.appservice.port }}
+      targetPort: {{ .Values.appservice.targetPort }}
+      nodePort: {{ .Values.appservice.nodePort }}

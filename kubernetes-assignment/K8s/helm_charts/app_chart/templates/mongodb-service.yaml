@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+spec:
+  selector:
+    app: mongodb
+  type: {{ .Values.internalservice.type }}
+  ports:
+    - port: {{ .Values.internalservice.port }}
+      targetPort: {{ .Values.internalservice.port }}
+      protocol: TCP

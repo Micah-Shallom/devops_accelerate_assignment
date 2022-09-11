@@ -1,0 +1,138 @@
+---
+# Source: app/templates/mongo-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongodb-secrets
+type: Opaque
+data:
+  mongo-root-username: bXNoYWxsb20=
+  mongo-root-password: Q2hhbW8uUHpv
+---
+# Source: app/templates/express-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongodb-configmaps
+data:
+  database_url: mongodb-service
+---
+# Source: app/templates/express-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-express-service
+  labels:
+    helm.sh/chart: app-0.1.0
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    app: mongo-express
+  type: LoadBalancer
+  ports:
+    - port: 8081
+      targetPort: 8081
+      nodePort: 30000
+      protocol: TCP
+---
+# Source: app/templates/mongodb-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+  labels:
+    helm.sh/chart: app-0.1.0
+    app.kubernetes.io/name: app
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    app: mongodb
+  type: ClusterIP
+  ports:
+    - port: 27017
+      targetPort: http
+      protocol: TCP
+      name: http
+---
+# Source: app/templates/express-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+#   name: release-name
+  name: mongo-express-deployment
+  labels:
+    app: mongo-express
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-express
+  template:
+    metadata:
+      labels:
+        app: mongo-express
+    spec:
+      containers:
+      - name: mongo-express
+        image: mongo-express
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8081
+        env:
+        - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secrets
+              key: mongo-root-username
+        - name: ME_CONFIG_MONGODB_ADMINPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secrets
+              key: mongo-root-password
+        - name: ME_CONFIG_MONGODB_SERVER
+          valueFrom:
+            configMapKeyRef:
+              name: mongodb-configmap
+              key: database_url
+---
+# Source: app/templates/mongodb-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # name: release-name
+  name: mongodb-deployment
+  labels:
+    app: mongodb
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 27017
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secrets
+              key: mongo-root-username
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secrets
+              key: mongo-root-password

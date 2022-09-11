@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.externalservice.name }}
+spec:
+  selector:
+    app: mongo-express
+  type: {{ .Values.externalservice.type }}
+  ports:
+    - port: {{ .Values.externalservice.port }}
+      targetPort: {{ .Values.externalservice.targetPort }}
+      nodePort: {{ .Values.externalservice.nodePort }}
+      protocol: TCP

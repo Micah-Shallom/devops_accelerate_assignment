@@ -1,26 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}
+  # name: {{ .Release.Name }}
+  name: mongodb-deployment
   labels:
-    {{- include "db_charts.labels" . | nindent 4 }}
+    app: mongodb
 
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "db_charts.selectorLabels" . | nindent 6 }}
+      app: mongodb
   template:
     metadata:
       labels:
-        {{- include "db_charts.selectorLabels" . | nindent 8 }}
+        app: mongodb
     spec:
       containers:
-      - name: {{ .Values.container.name }}
-        image: {{ .Values.image.repository }}
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+      - name: {{ .Values.containers.dbname }}
+        image: {{ .Values.mongodbimage.repository }}
+        imagePullPolicy: {{ .Values.mongodbimage.pullPolicy }}
         ports:
-        - containerPort: {{ .Values.service.targetPort }}
+        - containerPort: {{ .Values.internalservice.targetPort }}
         env:
         - name: MONGO_INITDB_ROOT_USERNAME
           valueFrom:
