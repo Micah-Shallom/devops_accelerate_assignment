@@ -1,0 +1,48 @@
+# Default values for db_charts.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+environment: uat
+replicaCount: 1
+
+mongodbimage:
+  repository: mongo
+  pullPolicy: IfNotPresent
+expressimage:
+  repository: mongo-express
+  pullPolicy: IfNotPresent
+appimage:
+  repository: mshallom/app-frontend:latest
+
+internalservice:
+  type: ClusterIP
+  port: 27017
+  name: mongodb-service
+  targetPort: 27017
+
+externalservice:
+  type: LoadBalancer
+  port: 8081
+  name: mongo-express-service
+  targetPort: 8081
+  nodePort: 30050
+
+appservice:
+  type: LoadBalancer
+  port: 5000
+  name: app-service
+  targetPort: 5000
+  nodePort: 30400
+
+containers:
+  dbname: mongodb
+  expname: mongo-express
+
+
+configmap:
+  name: mongodb-configmaps
+
+secret:
+  name: mongodb-secrets
+  username: bXNoYWxsb20=
+  password: Q2hhbW8uUHpv

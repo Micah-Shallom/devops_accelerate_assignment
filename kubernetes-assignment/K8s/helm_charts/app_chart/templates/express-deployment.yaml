@@ -16,7 +16,8 @@ spec:
         app: mongo-express
     spec:
       containers:
-      - name: {{ .Values.containers.expname }}
+    #   - name: {{ .Values.containers.expname }}
+      - name: {{ .Values.environment }}
         image: {{ .Values.expressimage.repository }}
         imagePullPolicy: {{ .Values.expressimage.pullPolicy }}
         ports:

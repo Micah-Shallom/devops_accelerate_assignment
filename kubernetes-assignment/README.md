@@ -28,3 +28,11 @@ Wrote helm chart deployment for application
 Running application
 
 ![](./screenshots/5.deploy_success.jpg)
+
+Creating new namespaces for each stage
+
+![](./screenshots/6.dev_namespace_deploy.jpg)
+
+All deployed environments
+
+![](./screenshots/7.all_env.jpg)
