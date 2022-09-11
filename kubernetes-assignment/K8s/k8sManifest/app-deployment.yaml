@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-frontend-deployment
+  labels:
+    app: app-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-frontend
+  template:
+    metadata:
+      labels:
+        app: app-frontend
+    spec:
+      containers:
+      - name: application
+        image: mshallom/app-frontend:latest
+        ports:
+          - containerPort: 5000
+            name: http-web
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-frontend-service
+spec:
+  selector:
+    app: app-frontend
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+      nodePort: 30500
