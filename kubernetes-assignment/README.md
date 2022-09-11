@@ -36,3 +36,8 @@ Creating new namespaces for each stage
 All deployed environments
 
 ![](./screenshots/7.all_env.jpg)
+
+Successfull ArgoCD app synchronization 
+
+https://user-images.githubusercontent.com/64049432/189550249-dbda371f-68f7-4ff4-ae3e-d481a222cd53.mp4
+
