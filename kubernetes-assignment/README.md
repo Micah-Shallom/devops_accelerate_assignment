@@ -18,6 +18,10 @@ Application runs well on basic docker containers
 
 ![](./screenshots/docker-compose-run.jpg)
 
+Application Setup with Kubernetes Manifest
+
+![](./screenshots/manifest_files.jpg)
+
 ## Cluster Deployment
 #
 
